@@ -75,6 +75,9 @@ public class CompositeLaunchMainTabControls {
 				table.OnChangedItems(e.items);
 				UpdateNotes(e.sender.GetItems());
 				UpdateButtonEnabled();	
+				
+				if (table.getSelectionIndex() >= 0)
+					textStartTime.setText(table.GetSelectedItemStartTime());				
 			}
 		});
 
