@@ -36,6 +36,11 @@ import org.eclipse.swt.widgets.Group;
 import compositelaunchplugin.CompositeLaunchData;
 import compositelaunchplugin.CompositeLaunchData.CompositeLaunchItem;
 import compositelaunchplugin.CompositeLaunchData.CompositeLaunchItems;
+import compositelaunchplugin.CompositeLaunchDataObserver.CompositeLaunchDataEvent;
+import compositelaunchplugin.CompositeLaunchDataObserver.CompositeLaunchDataEventChangedItem;
+import compositelaunchplugin.CompositeLaunchDataObserver.CompositeLaunchDataEventChangedItems;
+import compositelaunchplugin.CompositeLaunchDataObserver.CompositeLaunchDataListener;
+import compositelaunchplugin.CompositeLaunchDataObserver.CompositeLaunchDataListenerTypes;
 import compositelaunchplugin.CompositeLaunchUtils;
 
 /**
@@ -60,6 +65,48 @@ public class CompositeLaunchMainTabControls {
 
 	public CompositeLaunchMainTabControls(CompositeLaunchData _сompositeLaunchData) {
 		compositeLaunchData = _сompositeLaunchData;
+		
+		// Подписываемся на изменение данных текущей композитной конфигурации
+		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnChangedItems, new CompositeLaunchDataListener() {			
+			@Override
+			public void handleEvent(CompositeLaunchDataEvent event) {		
+				CompositeLaunchDataEventChangedItems e = (CompositeLaunchDataEventChangedItems) event;
+				
+				table.OnChangedItems(e.items);
+				UpdateNotes(e.sender.GetItems());
+				UpdateButtonEnabled();	
+			}
+		});
+
+		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnAddItem, new CompositeLaunchDataListener() {
+			@Override
+			public void handleEvent(CompositeLaunchDataEvent event) {		
+				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
+				table.OnAddItem(e.item);
+				UpdateNotes(e.sender.GetItems());
+				UpdateButtonEnabled();
+			}
+		});
+		
+		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnRemoveItem, new CompositeLaunchDataListener() {				
+			@Override
+			public void handleEvent(CompositeLaunchDataEvent event) {		
+				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
+				table.OnRemoveItem(e.item);
+				UpdateNotes(e.sender.GetItems());
+				UpdateButtonEnabled();
+			}
+		});
+
+		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnUpdateItem, new CompositeLaunchDataListener() {				
+			@Override
+			public void handleEvent(CompositeLaunchDataEvent event) {		
+				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
+				table.OnUpdateItem(e.item);
+				UpdateNotes(e.sender.GetItems());
+				UpdateButtonEnabled();
+			}
+		});
 	}
 
 	/** Создаёт пользовательские элементы управления */

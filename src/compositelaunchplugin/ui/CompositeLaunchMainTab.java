@@ -43,29 +43,10 @@ public class CompositeLaunchMainTab extends AbstractLaunchConfigurationTab  {
 		setControl(comp);
 		compositeLaunchMainTabControls.СreateControls(comp);
 		
-		// Подписываемся на изменение данных текущей композитной конфигурации
-		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnChangedItems, new CompositeLaunchDataListener() {
-			
-			@Override
-			public void handleEvent(CompositeLaunchDataEvent event) {		
-				CompositeLaunchDataEventChangedItems e = (CompositeLaunchDataEventChangedItems) event;
-				compositeLaunchMainTabControls.table.OnChangedItems(e.items);
-				compositeLaunchMainTabControls.UpdateNotes(e.sender.GetItems());
-				compositeLaunchMainTabControls.UpdateButtonEnabled();
-				
-				updateLaunchConfigurationDialog();
-			}
-		});
-
 		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnAddItem, new CompositeLaunchDataListener() {
 			
 			@Override
-			public void handleEvent(CompositeLaunchDataEvent event) {		
-				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
-				compositeLaunchMainTabControls.table.OnAddItem(e.item);
-				compositeLaunchMainTabControls.UpdateNotes(e.sender.GetItems());
-				compositeLaunchMainTabControls.UpdateButtonEnabled();
-				
+			public void handleEvent(CompositeLaunchDataEvent event) {
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -73,12 +54,7 @@ public class CompositeLaunchMainTab extends AbstractLaunchConfigurationTab  {
 		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnRemoveItem, new CompositeLaunchDataListener() {
 				
 			@Override
-			public void handleEvent(CompositeLaunchDataEvent event) {		
-				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
-				compositeLaunchMainTabControls.table.OnRemoveItem(e.item);
-				compositeLaunchMainTabControls.UpdateNotes(e.sender.GetItems());
-				compositeLaunchMainTabControls.UpdateButtonEnabled();
-				
+			public void handleEvent(CompositeLaunchDataEvent event) {
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -86,12 +62,7 @@ public class CompositeLaunchMainTab extends AbstractLaunchConfigurationTab  {
 		compositeLaunchData.AddListener(CompositeLaunchDataListenerTypes.OnUpdateItem, new CompositeLaunchDataListener() {
 				
 			@Override
-			public void handleEvent(CompositeLaunchDataEvent event) {		
-				CompositeLaunchDataEventChangedItem e = (CompositeLaunchDataEventChangedItem) event;
-				compositeLaunchMainTabControls.table.OnUpdateItem(e.item);
-				compositeLaunchMainTabControls.UpdateNotes(e.sender.GetItems());
-				compositeLaunchMainTabControls.UpdateButtonEnabled();
-				
+			public void handleEvent(CompositeLaunchDataEvent event) {
 				updateLaunchConfigurationDialog();
 			}
 		});
