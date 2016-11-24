@@ -74,19 +74,23 @@ public class CompositeLaunchPlugInHandler implements ILaunchConfigurationDelegat
 				
 				ILaunchConfiguration launchConfiguration = item.LaunchConfiguration;
 	
-				// Запускаем следующую дочернюю конфигурацию
-				ILaunch configurationLaunch = launchConfiguration.launch(mode,launchMonitor.newChild(1));
-				
-				
-				// Добавляем в композитную конфигурацию все объекты IDebugTarget связанные с дочерней конфигурацией
-				for (IDebugTarget debugTarget : configurationLaunch.getDebugTargets())
-					launch.addDebugTarget(debugTarget);
-				
-				// Добавляем в композитную конфигурацию все процессы связанные с дочерней конфигурацией
-				for (IProcess process : configurationLaunch.getProcesses())
-					launch.addProcess(process);	
-				
-				UpdateProgressStatus(launchMonitor, "Done.");
+				try{
+					// Запускаем следующую дочернюю конфигурацию
+					ILaunch configurationLaunch = launchConfiguration.launch(mode,launchMonitor.newChild(1));
+					
+					
+					// Добавляем в композитную конфигурацию все объекты IDebugTarget связанные с дочерней конфигурацией
+					for (IDebugTarget debugTarget : configurationLaunch.getDebugTargets())
+						launch.addDebugTarget(debugTarget);
+					
+					// Добавляем в композитную конфигурацию все процессы связанные с дочерней конфигурацией
+					for (IProcess process : configurationLaunch.getProcesses())
+						launch.addProcess(process);	
+					
+					UpdateProgressStatus(launchMonitor, "Done.");
+				} catch(Exception e){
+					UpdateProgressStatus(launchMonitor, "Exception: " + e.getMessage());					
+				}
 			}
 		}
 		finally{
